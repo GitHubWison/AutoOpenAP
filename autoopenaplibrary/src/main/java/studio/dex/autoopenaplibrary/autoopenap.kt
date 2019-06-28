@@ -16,8 +16,8 @@ object AutoOpenAp {
     }
 
     //    打开热点
-    fun openAP(context: Context) {
-        apManager.openAP(context)
+    fun openAP(context: Context):Boolean {
+       return apManager.openAP(context)
     }
 
     //    关闭热点
@@ -27,12 +27,14 @@ object AutoOpenAp {
 }
 
 interface APManagerI {
-    fun openAP(context: Context)
+    fun openAP(context: Context):Boolean
     fun closeAP()
 }
 
+
 class AndroidUnder7OpenAP : APManagerI {
-    override fun openAP(context: Context) {
+    override fun openAP(context: Context):Boolean {
+        var res:Boolean = false
         Log.e("7.0以下", "openAP")
         try {
             //        1.拿到热点名和密码
@@ -64,12 +66,14 @@ class AndroidUnder7OpenAP : APManagerI {
             }
             val openMethod =
                 wifiManager.javaClass.getMethod("setWifiApEnabled", WifiConfiguration::class.java, Boolean::class.java)
-            val enable = openMethod.invoke(wifiManager, openConfig, true) as Boolean
+            res = openMethod.invoke(wifiManager, openConfig, true) as Boolean
 
 
         } catch (e: Exception) {
             e.printStackTrace()
+            res = false
         }
+        return res
 
 
     }
@@ -81,11 +85,12 @@ class AndroidUnder7OpenAP : APManagerI {
 }
 
 class AndroidOver7OpenAP : APManagerI {
-    override fun openAP(context: Context) {
+    override fun openAP(context: Context):Boolean {
         Log.e("7.0以上", "openAP")
         val connectivityManager = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.startTethering(ConnectivityManager.TETHERING_WIFI,
             true, ONStartTetheringCallback())
+        return true
     }
 
     override fun closeAP() {
