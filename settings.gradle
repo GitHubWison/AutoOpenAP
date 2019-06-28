@@ -1,0 +1,3 @@
+include ':app', ':autoopenaplibrary'
+//,':toolslibrary'
+//project(':toolslibrary').projectDir = new File("/home/xuqiwei/documents/android/project/mymodule/Tools/toolslibrary")
