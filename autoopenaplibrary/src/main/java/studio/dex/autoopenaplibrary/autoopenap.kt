@@ -9,7 +9,7 @@ import android.util.Log
 import java.lang.Exception
 
 object AutoOpenAp {
-    var apManager: APManagerI = if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)) {
+    var apManager: APManagerI = if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)) {
         AndroidOver7OpenAP()
     } else {
         AndroidUnder7OpenAP()
